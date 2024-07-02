@@ -7,9 +7,9 @@ import (
 
 func TestGetProductList(t *testing.T) {
 	expectedProducts := []Product{
-		{sku: "A", unitPrice: 20},
-		{sku: "B", unitPrice: 15},
-		{sku: "C", unitPrice: 50},
+		{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+		{sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
+		{sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
 	}
 
 	actualProducts := getProductList()
@@ -27,14 +27,14 @@ func TestAddProductToBasket(t *testing.T) {
 
 	var expectedBasket = map[string][]Product{
 		"A": {
-			{sku: "A", unitPrice: 20},
-			{sku: "A", unitPrice: 20},
+			{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+			{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
 		},
 		"B": {
-			{sku: "B", unitPrice: 15},
+			{sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
 		},
 		"C": {
-			{sku: "C", unitPrice: 50},
+			{sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
 		},
 	}
 
@@ -70,4 +70,39 @@ func TestCalculateCheckoutTotal(t *testing.T) {
 		checkoutTotal: %v`,
 			expectedTotal, checkoutTotal)
 	}
+}
+
+func TestAddDiscount(t *testing.T) {
+	var products = []Product{
+		{sku: "A", unitPrice: 20},
+		{sku: "A", unitPrice: 20},
+	}
+
+	tests := map[string]struct {
+		products         []Product
+		itemCountForDeal int
+		result           bool
+	}{
+		"return true": {
+			products:         products,
+			itemCountForDeal: 2,
+			result:           true,
+		},
+		"return false": {
+			products:         products,
+			itemCountForDeal: 3,
+			result:           false,
+		},
+	}
+
+	for name, test := range tests {
+		test := test
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			if got, expected := addDiscount(test.products, test.itemCountForDeal), test.result; got != expected {
+				t.Fatalf("addDiscount(%v,%v) returned %v; expected %v", test.products, test.itemCountForDeal, got, expected)
+			}
+		})
+	}
+
 }

@@ -22,7 +22,12 @@ func main() {
 
 		product := addProductToBasket(option)
 		basket[product.sku] = append(basket[product.sku], product)
-		checkoutTotal = calculateCheckoutTotal(product.unitPrice, checkoutTotal)
-		fmt.Println(checkoutTotal)
+
+		if addDiscount(basket[product.sku], product.discount.itemCountForDiscount) {
+			discountPrice := product.unitPrice + product.discount.discount
+			checkoutTotal = calculateCheckoutTotal(discountPrice, checkoutTotal)
+		} else {
+			checkoutTotal = calculateCheckoutTotal(product.unitPrice, checkoutTotal)
+		}
 	}
 }
