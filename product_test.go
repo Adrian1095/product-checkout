@@ -21,3 +21,39 @@ func TestGetProductList(t *testing.T) {
 			expectedProducts, actualProducts)
 	}
 }
+
+func TestAddProductToBasket(t *testing.T) {
+	basket := make(map[string][]Product)
+
+	var expectedBasket = map[string][]Product{
+		"A": {
+			{sku: "A", unitPrice: 20},
+			{sku: "A", unitPrice: 20},
+		},
+		"B": {
+			{sku: "B", unitPrice: 15},
+		},
+		"C": {
+			{sku: "C", unitPrice: 50},
+		},
+	}
+
+	product := addProductToBasket(1)
+	basket[product.sku] = append(basket[product.sku], product)
+
+	product = addProductToBasket(2)
+	basket[product.sku] = append(basket[product.sku], product)
+
+	product = addProductToBasket(3)
+	basket[product.sku] = append(basket[product.sku], product)
+
+	product = addProductToBasket(1)
+	basket[product.sku] = append(basket[product.sku], product)
+
+	if !reflect.DeepEqual(expectedBasket, basket) {
+		t.Fatalf(`Expected products list does not match actual products list.
+		Expected: %v
+		Actual: %v`,
+			expectedBasket, basket)
+	}
+}
