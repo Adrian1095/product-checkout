@@ -29,3 +29,8 @@ func addProductToBasket(option int) Product {
 
 	return product
 }
+
+func calculateCheckoutTotal(productPrice int, checkoutTotal int) int {
+	checkoutTotal += productPrice
+	return checkoutTotal
+}

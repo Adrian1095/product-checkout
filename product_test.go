@@ -57,3 +57,17 @@ func TestAddProductToBasket(t *testing.T) {
 			expectedBasket, basket)
 	}
 }
+
+func TestCalculateCheckoutTotal(t *testing.T) {
+	checkoutTotal := 10
+	expectedTotal := 15
+
+	checkoutTotal = calculateCheckoutTotal(5, 10)
+
+	if expectedTotal != checkoutTotal {
+		t.Fatalf(`Expected total does not equal checkoutTotal
+		expectedTotal: %v,
+		checkoutTotal: %v`,
+			expectedTotal, checkoutTotal)
+	}
+}
