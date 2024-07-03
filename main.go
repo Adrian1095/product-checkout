@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func main() {
@@ -9,8 +11,8 @@ func main() {
 		basket        = make(map[string][]Product)
 		checkoutTotal = 0
 	)
-	products := getProductList()
-	displayMenu(products)
+
+	displayMenu()
 
 	var option int
 
@@ -20,14 +22,32 @@ func main() {
 			break
 		}
 
-		product := addProductToBasket(option)
-		basket[product.sku] = append(basket[product.sku], product)
-
-		if addDiscount(basket[product.sku], product.discount.itemCountForDiscount) {
-			discountPrice := product.unitPrice + product.discount.discount
-			checkoutTotal = calculateCheckoutTotal(discountPrice, checkoutTotal)
-		} else {
-			checkoutTotal = calculateCheckoutTotal(product.unitPrice, checkoutTotal)
+		if option == 10 {
+			displayCheckout(basket, checkoutTotal)
+			fmt.Println("press Enter to navigate to menu...")
+			bufio.NewReader(os.Stdin).ReadBytes('\n')
+			displayMenu()
 		}
+
+		if option >= 1 && option <= 3 {
+			product := addProductToBasket(option)
+			basket[product.sku] = append(basket[product.sku], product)
+
+			if addDiscount(basket[product.sku], product.discount.itemCountForDiscount) {
+				discountPrice := product.unitPrice + product.discount.discount
+				checkoutTotal = calculateCheckoutTotal(discountPrice, checkoutTotal)
+			} else {
+				checkoutTotal = calculateCheckoutTotal(product.unitPrice, checkoutTotal)
+			}
+			fmt.Println("Product added to basket")
+		}
+
+		if option == 4 {
+			displayProductDiscount()
+			fmt.Println("press Enter to navigate to menu...")
+			bufio.NewReader(os.Stdin).ReadBytes('\n')
+			displayMenu()
+		}
+
 	}
 }

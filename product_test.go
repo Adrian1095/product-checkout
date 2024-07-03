@@ -7,18 +7,16 @@ import (
 
 func TestGetProductList(t *testing.T) {
 	expectedProducts := []Product{
-		{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
-		{sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
-		{sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
+		{id: 1, sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+		{id: 2, sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
+		{id: 3, sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
 	}
 
-	actualProducts := getProductList()
-
-	if !reflect.DeepEqual(expectedProducts, actualProducts) {
+	if !reflect.DeepEqual(expectedProducts, products) {
 		t.Fatalf(`Expected products list does not match actual products list.
 		Expected: %v
 		Actual: %v`,
-			expectedProducts, actualProducts)
+			expectedProducts, products)
 	}
 }
 
@@ -27,14 +25,14 @@ func TestAddProductToBasket(t *testing.T) {
 
 	var expectedBasket = map[string][]Product{
 		"A": {
-			{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
-			{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+			{id: 1, sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+			{id: 1, sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
 		},
 		"B": {
-			{sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
+			{id: 2, sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
 		},
 		"C": {
-			{sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
+			{id: 3, sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
 		},
 	}
 

@@ -10,21 +10,19 @@ type Discount struct {
 }
 
 type Product struct {
+	id        int
 	sku       string
 	unitPrice int
 	discount  Discount
 }
 
-func getProductList() []Product {
-	return []Product{
-		{sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
-		{sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
-		{sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
-	}
+var products = []Product{
+	{id: 1, sku: "A", unitPrice: 20, discount: Discount{itemCountForDiscount: 3, discount: -5}},
+	{id: 2, sku: "B", unitPrice: 15, discount: Discount{itemCountForDiscount: 2, discount: -10}},
+	{id: 3, sku: "C", unitPrice: 50, discount: Discount{itemCountForDiscount: 3, discount: -30}},
 }
 
 func addProductToBasket(option int) Product {
-	products := getProductList()
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("Invalid item cannot be added to basket.")
@@ -46,3 +44,7 @@ func addDiscount(products []Product, itemCountForDeal int) bool {
 
 	return productCount%itemCountForDeal == 0
 }
+
+// func editProductDiscount(product Product, discount Discount) {
+// 	product.discount = discount
+// }
